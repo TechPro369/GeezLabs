@@ -1,0 +1,9 @@
+# https://geez-labs.com
+
+User-agent: *
+Allow: /
+
+# Block low-value files (optional)
+Disallow: /*.json$
+
+Sitemap: https://geez-labs.com/sitemap.xml
