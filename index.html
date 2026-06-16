@@ -37,6 +37,48 @@
 <meta name="twitter:description" content="Web design agency for small businesses and individuals — conversion-focused sites and standout portfolios. Clean, fast, hand-coded." />
 <meta name="twitter:image" content="https://geez-labs.com/og-image.jpg" />
 
+<!-- Structured data: helps Google and other engines understand the business -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Geez Labs",
+  "alternateName": "GeezLabs",
+  "url": "https://geez-labs.com",
+  "logo": "https://geez-labs.com/apple-touch-icon.png",
+  "image": "https://geez-labs.com/og-image.jpg",
+  "description": "Independent web design agency building modern, conversion-focused websites for small businesses and standout portfolios for individuals.",
+  "email": "aregubq@gmail.com",
+  "priceRange": "$$",
+  "areaServed": [
+    { "@type": "Place", "name": "United States" },
+    { "@type": "Place", "name": "Ethiopia" }
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Biruk Aregu",
+    "jobTitle": "Web Designer & Developer",
+    "url": "https://birukaregu.com",
+    "sameAs": [
+      "https://www.linkedin.com/in/biruk-aregu",
+      "https://github.com/TechPro369"
+    ]
+  },
+  "knowsAbout": [
+    "Web Design",
+    "Web Development",
+    "Portfolio Websites",
+    "Landing Pages",
+    "Small Business Websites",
+    "Single-page Applications"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/in/biruk-aregu",
+    "https://github.com/TechPro369"
+  ]
+}
+</script>
+
 <!-- Fonts: distinctive grotesques, clean and modern -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -452,11 +494,12 @@
   .mobile-menu nav a:active{ color:var(--accent); }
   /* Links are ALWAYS fully visible by default — so they can never get trapped
      invisible in a restrictive WebView (e.g. the Google app). The fade-in below
-     only applies when JS adds .is-animating on open, as a safe enhancement. */
-  .mobile-menu nav a{ opacity:1; }
+     uses `backwards` fill-mode so the "from" (hidden) state only applies during
+     the animation-delay. If the keyframe animation doesn't run at all (broken
+     WebView), the link falls back to its declared default state below — visible. */
+  .mobile-menu nav a{ opacity:1; transform:none; }
   .mobile-menu.is-animating nav a{
-    opacity:0; transform:translateY(18px);
-    animation:menuLinkIn .5s var(--ease) forwards;
+    animation:menuLinkIn .5s var(--ease) backwards;
   }
   .mobile-menu.is-animating nav a:nth-child(1){ animation-delay:.10s; }
   .mobile-menu.is-animating nav a:nth-child(2){ animation-delay:.16s; }
@@ -465,7 +508,10 @@
   .mobile-menu.is-animating nav a:nth-child(5){ animation-delay:.34s; }
   .mobile-menu.is-animating nav a:nth-child(6){ animation-delay:.40s; }
   .mobile-menu.is-animating nav a:nth-child(7){ animation-delay:.46s; }
-  @keyframes menuLinkIn{ to{ opacity:1; transform:none; } }
+  @keyframes menuLinkIn{
+    from{ opacity:0; transform:translateY(18px); }
+    to  { opacity:1; transform:none; }
+  }
   .mobile-foot{
     position:absolute; bottom:var(--gutter); left:var(--gutter); right:var(--gutter);
     display:flex; justify-content:space-between; align-items:center;
@@ -1338,6 +1384,10 @@
         // force reflow so the animation restarts each time the menu opens
         void menu.offsetWidth;
         menu.classList.add('is-animating');
+        // Safety net: in WebViews where the animation never fires (e.g. Google
+        // app in-app browser), strip the class after the animation window so
+        // links are guaranteed to be in their default visible state.
+        setTimeout(function(){ menu.classList.remove('is-animating'); }, 1100);
       } else {
         menu.classList.remove('is-animating');
       }
@@ -2447,7 +2497,7 @@
           '<h3>Where it&rsquo;s stored</h3>' +
           '<p>Contact form submissions are processed by Formspree, our form-handling provider. Email correspondence is stored in our standard email inbox.</p>' +
           '<h3>Your rights</h3>' +
-          '<p>You can request a copy or deletion of any data we hold about you at any time. Just email <a href="mailto:hello@geez-labs.com">hello@geez-labs.com</a> and we&rsquo;ll respond within 30 days.</p>'
+          '<p>You can request a copy or deletion of any data we hold about you at any time. Just email <a href="mailto:aregubq@gmail.com">aregubq@gmail.com</a> and we&rsquo;ll respond within 30 days.</p>'
       },
       terms: {
         title: 'Terms of Service',
