@@ -1172,93 +1172,157 @@
   /* ============================================================
      LEGAL MODAL
   ============================================================ */
-  .legal-modal{
+  /* ---- Legal full-screen page (Privacy / Terms / Cookies) ---- */
+  .legal-page{
     position:fixed; inset:0; z-index:1000;
-    display:flex; align-items:center; justify-content:center;
-    padding:clamp(16px, 4vw, 40px);
-    opacity:0; pointer-events:none;
-    transition:opacity .35s var(--ease);
-  }
-  .legal-modal.open{ opacity:1; pointer-events:auto; }
-  .legal-modal__backdrop{
-    position:absolute; inset:0;
-    background:rgba(24,23,20,.55);
-    backdrop-filter:blur(8px) saturate(1.2);
-    -webkit-backdrop-filter:blur(8px) saturate(1.2);
-  }
-  .legal-modal__panel{
-    position:relative;
-    width:100%; max-width:620px;
-    max-height:min(85vh, 720px);
     background:var(--paper);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow-md);
-    display:flex; flex-direction:column;
-    overflow:hidden;
-    transform:translateY(20px) scale(.96);
-    opacity:0;
-    transition:transform .45s var(--ease), opacity .35s var(--ease);
+    overflow-y:auto; overflow-x:hidden;
+    opacity:0; visibility:hidden;
+    transform:translateY(14px);
+    transition:opacity .5s var(--ease), transform .55s var(--ease),
+               visibility 0s linear .5s;
+    scrollbar-width:thin; scrollbar-color:var(--line) transparent;
+    -webkit-overflow-scrolling:touch;
   }
-  .legal-modal.open .legal-modal__panel{
-    transform:translateY(0) scale(1); opacity:1;
+  .legal-page.open{
+    opacity:1; visibility:visible; transform:none;
+    transition:opacity .5s var(--ease), transform .55s var(--ease),
+               visibility 0s;
   }
-  .legal-modal__head{
-    display:flex; align-items:center; justify-content:space-between;
-    gap:1rem; padding:1.6rem 1.8rem 1.1rem;
-    border-bottom:1px solid var(--line);
-    background:linear-gradient(180deg, var(--paper-2) 0%, var(--paper) 100%);
+  .legal-page::-webkit-scrollbar{ width:11px; }
+  .legal-page::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; }
+
+  /* sticky blurred header */
+  .legal-page__bar{
+    position:sticky; top:0; z-index:5;
+    background:rgba(250,248,244,.72);
+    backdrop-filter:saturate(1.7) blur(18px);
+    -webkit-backdrop-filter:saturate(1.7) blur(18px);
+    border-bottom:1px solid rgba(228,223,213,.75);
   }
-  .legal-modal__title{
-    font-family:var(--display);
-    font-size:clamp(1.25rem, 2.4vw, 1.55rem);
-    font-weight:600; color:var(--ink);
-    margin:0; letter-spacing:-.01em;
+  .legal-page__bar-inner{
+    position:relative;
+    max-width:var(--maxw); margin:0 auto;
+    padding:0 var(--gutter);
+    height:58px;
+    display:flex; align-items:center; justify-content:space-between; gap:1rem;
   }
-  .legal-modal__close{
-    width:36px; height:36px; border-radius:50%;
+  .legal-page__back{
+    display:inline-flex; align-items:center; gap:.42rem;
+    background:transparent; border:0; cursor:pointer;
+    font-family:var(--body); font-size:.92rem; font-weight:600;
+    color:var(--accent); padding:.4rem .1rem;
+    transition:color .25s var(--ease), gap .25s var(--ease);
+  }
+  .legal-page__back:hover{ color:var(--accent-deep); gap:.62rem; }
+  .legal-page__back svg{ width:17px; height:17px; }
+  .legal-page__eyebrow{
+    position:absolute; left:50%; transform:translateX(-50%);
+    font-family:var(--display); font-weight:600; font-size:.92rem;
+    letter-spacing:.005em; color:var(--ink); white-space:nowrap;
+  }
+  .legal-page__close{
+    width:34px; height:34px; border-radius:50%;
     background:transparent; border:1px solid var(--line);
     display:flex; align-items:center; justify-content:center;
-    color:var(--ink-soft); cursor:pointer;
+    color:var(--ink-soft); cursor:pointer; flex:none;
     transition:background .25s var(--ease), color .25s var(--ease),
                border-color .25s var(--ease), transform .25s var(--ease);
   }
-  .legal-modal__close:hover{
+  .legal-page__close:hover{
     background:var(--ink); color:var(--paper);
     border-color:var(--ink); transform:rotate(90deg);
   }
-  .legal-modal__body{
-    padding:1.5rem 1.8rem 1.8rem;
-    overflow-y:auto;
-    color:var(--ink-soft);
-    font-size:.97rem; line-height:1.65;
-    scrollbar-width:thin;
-    scrollbar-color:var(--line) transparent;
+  .legal-page__close svg{ width:15px; height:15px; }
+
+  /* hero */
+  .legal-page__hero{
+    max-width:var(--maxw); margin:0 auto;
+    padding:clamp(3rem,8vw,6rem) var(--gutter) clamp(1.6rem,4vw,2.6rem);
   }
-  .legal-modal__body::-webkit-scrollbar{ width:8px; }
-  .legal-modal__body::-webkit-scrollbar-thumb{
-    background:var(--line); border-radius:4px;
+  .legal-page__meta{
+    display:block; font-family:var(--body);
+    font-size:.78rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--ink-faint); margin-bottom:.95rem;
   }
-  .legal-modal__body h3{
-    font-family:var(--display);
-    font-size:1.02rem; font-weight:600; color:var(--ink);
-    margin:1.25rem 0 .5rem; letter-spacing:-.005em;
+  .legal-page__title{
+    font-family:var(--display); font-weight:600;
+    font-size:clamp(2.6rem,7vw,4.6rem); line-height:1.02;
+    letter-spacing:-.025em; color:var(--ink); margin:0;
   }
-  .legal-modal__body h3:first-child{ margin-top:0; }
-  .legal-modal__body p{ margin:0 0 .85rem; }
-  .legal-modal__body p:last-child{ margin-bottom:0; }
-  .legal-modal__body a{
+
+  /* two-column layout: TOC + content */
+  .legal-page__layout{
+    max-width:var(--maxw); margin:0 auto;
+    padding:0 var(--gutter) clamp(4rem,10vw,7rem);
+    display:grid; grid-template-columns:232px 1fr;
+    gap:clamp(2rem,5vw,4.5rem); align-items:start;
+  }
+  .legal-page__toc{ position:sticky; top:84px; }
+  .legal-page__toc-label{
+    display:block; font-family:var(--body);
+    font-size:.72rem; font-weight:700; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--ink-faint); margin-bottom:1rem; padding-left:.95rem;
+  }
+  .legal-page__toc nav{
+    display:flex; flex-direction:column;
+    border-left:1px solid var(--line);
+  }
+  .legal-page__toc a{
+    font-family:var(--body); font-size:.92rem; font-weight:500; line-height:1.35;
+    color:var(--ink-faint); text-decoration:none;
+    padding:.42rem 0 .42rem .95rem; margin-left:-1px;
+    border-left:2px solid transparent;
+    transition:color .25s var(--ease), border-color .25s var(--ease);
+  }
+  .legal-page__toc a:hover{ color:var(--ink-soft); }
+  .legal-page__toc a.active{
+    color:var(--accent); border-left-color:var(--accent); font-weight:600;
+  }
+
+  .legal-page__content{ max-width:680px; }
+  .legal-page__content .lead{
+    font-family:var(--body); font-weight:400;
+    font-size:clamp(1.15rem,2.2vw,1.32rem); line-height:1.6;
+    color:var(--ink-soft); margin:0 0 2.4rem;
+  }
+  .legal-page__section{ scroll-margin-top:92px; }
+  .legal-page__section + .legal-page__section{
+    margin-top:2.6rem; padding-top:2.6rem; border-top:1px solid var(--line);
+  }
+  .legal-page__section h2{
+    font-family:var(--display); font-weight:600;
+    font-size:clamp(1.3rem,2.6vw,1.6rem); letter-spacing:-.012em;
+    color:var(--ink); margin:0 0 .85rem;
+  }
+  .legal-page__section p{
+    font-size:1.02rem; line-height:1.72; color:var(--ink-soft); margin:0 0 1rem;
+  }
+  .legal-page__section p:last-child{ margin-bottom:0; }
+  .legal-page__content a{
     color:var(--accent); text-decoration:none;
     border-bottom:1px solid transparent;
     transition:border-color .25s var(--ease);
   }
-  .legal-modal__body a:hover{ border-bottom-color:var(--accent); }
-  .legal-modal__meta{
-    display:inline-block;
-    font-size:.78rem; color:var(--ink-faint);
-    letter-spacing:.05em; text-transform:uppercase;
-    margin-bottom:.6rem;
+  .legal-page__content a:hover{ border-bottom-color:var(--accent); }
+
+  @media (max-width:820px){
+    .legal-page__layout{ grid-template-columns:1fr; gap:1.5rem; }
+    .legal-page__toc{ position:static; top:auto; }
+    .legal-page__toc-label{ padding-left:0; }
+    .legal-page__toc nav{ flex-flow:row wrap; border-left:0; gap:.5rem .45rem; }
+    .legal-page__toc a{
+      border-left:0; margin-left:0; padding:.4rem .9rem;
+      border:1px solid var(--line); border-radius:999px;
+    }
+    .legal-page__toc a.active{
+      border-color:var(--accent); background:var(--accent-wash);
+    }
   }
-  body.modal-open{ overflow:hidden; }
+  @media (max-width:560px){
+    .legal-page__eyebrow{ display:none; }
+  }
+  body.legal-open{ overflow:hidden; }
 
   /* ============================================================
      BACK TO TOP
@@ -2189,19 +2253,30 @@
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
 
-<!-- ===================== LEGAL MODAL ===================== -->
-<div class="legal-modal" id="legalModal" role="dialog" aria-modal="true" aria-labelledby="legalModalTitle" aria-hidden="true">
-  <div class="legal-modal__backdrop" data-close></div>
-  <div class="legal-modal__panel">
-    <div class="legal-modal__head">
-      <h2 class="legal-modal__title" id="legalModalTitle">Privacy Policy</h2>
-      <button class="legal-modal__close" data-close aria-label="Close">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+<!-- ===================== LEGAL PAGE (full-screen) ===================== -->
+<div class="legal-page" id="legalPage" role="dialog" aria-modal="true" aria-labelledby="legalPageTitle" aria-hidden="true">
+  <header class="legal-page__bar">
+    <div class="legal-page__bar-inner">
+      <button class="legal-page__back" data-legal-close>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        Back
+      </button>
+      <span class="legal-page__eyebrow">Geez Labs</span>
+      <button class="legal-page__close" data-legal-close aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
     </div>
-    <div class="legal-modal__body" id="legalModalBody">
-      <!-- content injected by JS -->
-    </div>
+  </header>
+  <div class="legal-page__hero">
+    <span class="legal-page__meta" id="legalPageMeta">Last updated · June 2026</span>
+    <h1 class="legal-page__title" id="legalPageTitle">Privacy Policy</h1>
+  </div>
+  <div class="legal-page__layout">
+    <aside class="legal-page__toc" aria-label="On this page">
+      <span class="legal-page__toc-label">On this page</span>
+      <nav id="legalPageToc"><!-- built by JS --></nav>
+    </aside>
+    <article class="legal-page__content" id="legalPageContent"><!-- built by JS --></article>
   </div>
 </div>
 
@@ -2475,97 +2550,140 @@
     });
   });
 
-  /* ---- Legal modal (Privacy / Terms / Cookies) ---- */
+  /* ---- Legal full-screen page (Privacy / Terms / Cookies) ---- */
   (function(){
-    var modal   = document.getElementById('legalModal');
-    var titleEl = document.getElementById('legalModalTitle');
-    var bodyEl  = document.getElementById('legalModalBody');
-    if(!modal || !titleEl || !bodyEl) return;
+    var page      = document.getElementById('legalPage');
+    var titleEl   = document.getElementById('legalPageTitle');
+    var metaEl    = document.getElementById('legalPageMeta');
+    var tocEl     = document.getElementById('legalPageToc');
+    var contentEl = document.getElementById('legalPageContent');
+    if(!page || !titleEl || !contentEl) return;
 
-    var lastFocus = null;
+    var lastFocus = null, spy = null;
 
     var CONTENT = {
       privacy: {
         title: 'Privacy Policy',
-        html:
-          '<span class="legal-modal__meta">Last updated · June 2026</span>' +
-          '<p>This Privacy Policy explains how Geez Labs (&ldquo;we&rdquo;, &ldquo;us&rdquo;) handles the information you share when you contact us or use this website.</p>' +
-          '<h3>Information we collect</h3>' +
-          '<p>When you submit the contact form, we collect the name, email address, and message details you provide. Standard server logs (such as IP address and browser type) may also be recorded by our hosting provider for security.</p>' +
-          '<h3>How we use it</h3>' +
-          '<p>We use your contact details solely to respond to your inquiry and discuss your project. We do not sell, rent, or share your information with third parties for marketing.</p>' +
-          '<h3>Where it&rsquo;s stored</h3>' +
-          '<p>Contact form submissions are processed by Formspree, our form-handling provider. Email correspondence is stored in our standard email inbox.</p>' +
-          '<h3>Your rights</h3>' +
-          '<p>You can request a copy or deletion of any data we hold about you at any time. Just email <a href="mailto:aregubq@gmail.com">aregubq@gmail.com</a> and we&rsquo;ll respond within 30 days.</p>'
+        meta:  'Last updated · June 2026',
+        lead:  'This Privacy Policy explains how Geez Labs (&ldquo;we&rdquo;, &ldquo;us&rdquo;) handles the information you share when you contact us or use this website.',
+        sections: [
+          { id:'privacy-collect', h:'Information we collect', html:'<p>When you submit the contact form, we collect the name, email address, and message details you provide. Standard server logs (such as IP address and browser type) may also be recorded by our hosting provider for security.</p>' },
+          { id:'privacy-use',     h:'How we use it',          html:'<p>We use your contact details solely to respond to your inquiry and discuss your project. We do not sell, rent, or share your information with third parties for marketing.</p>' },
+          { id:'privacy-store',   h:'Where it&rsquo;s stored', html:'<p>Contact form submissions are processed by Formspree, our form-handling provider. Email correspondence is stored in our standard email inbox.</p>' },
+          { id:'privacy-rights',  h:'Your rights',            html:'<p>You can request a copy or deletion of any data we hold about you at any time. Just email <a href="mailto:aregubq@gmail.com">aregubq@gmail.com</a> and we&rsquo;ll respond within 30 days.</p>' }
+        ]
       },
       terms: {
         title: 'Terms of Service',
-        html:
-          '<span class="legal-modal__meta">Last updated · June 2026</span>' +
-          '<p>These Terms govern your use of the Geez Labs website and any design or development services we provide.</p>' +
-          '<h3>Services</h3>' +
-          '<p>Geez Labs offers freelance web design and development. Each project is scoped, quoted, and confirmed in writing before work begins. Timelines and deliverables are agreed on a per-project basis.</p>' +
-          '<h3>Payment</h3>' +
-          '<p>A deposit is typically required before work begins, with the balance due on delivery. Specific terms are outlined in your project agreement.</p>' +
-          '<h3>Ownership</h3>' +
-          '<p>Once final payment is received, you receive full ownership of the deliverables created for your project. Geez Labs retains the right to display the work in our portfolio unless otherwise agreed in writing.</p>' +
-          '<h3>Liability</h3>' +
-          '<p>We do our best work, but we cannot guarantee specific business outcomes. Geez Labs is not liable for any indirect or consequential damages arising from use of the website or services.</p>'
+        meta:  'Last updated · June 2026',
+        lead:  'These Terms govern your use of the Geez Labs website and any design or development services we provide.',
+        sections: [
+          { id:'terms-services',  h:'Services',  html:'<p>Geez Labs offers freelance web design and development. Each project is scoped, quoted, and confirmed in writing before work begins. Timelines and deliverables are agreed on a per-project basis.</p>' },
+          { id:'terms-payment',   h:'Payment',   html:'<p>A deposit is typically required before work begins, with the balance due on delivery. Specific terms are outlined in your project agreement.</p>' },
+          { id:'terms-ownership', h:'Ownership', html:'<p>Once final payment is received, you receive full ownership of the deliverables created for your project. Geez Labs retains the right to display the work in our portfolio unless otherwise agreed in writing.</p>' },
+          { id:'terms-liability', h:'Liability', html:'<p>We do our best work, but we cannot guarantee specific business outcomes. Geez Labs is not liable for any indirect or consequential damages arising from use of the website or services.</p>' }
+        ]
       },
       cookies: {
         title: 'Cookie Policy',
-        html:
-          '<span class="legal-modal__meta">Last updated · June 2026</span>' +
-          '<p>This website uses cookies and similar technologies sparingly. Here&rsquo;s what to expect.</p>' +
-          '<h3>What we use</h3>' +
-          '<p>This site does not use third-party analytics, advertising trackers, or social media cookies. We do not store any persistent identifiers on your device.</p>' +
-          '<h3>Essential storage</h3>' +
-          '<p>Some browser storage may be used temporarily to remember small UI states (such as menu position) during your visit. This information stays on your device and is not transmitted anywhere.</p>' +
-          '<h3>Third-party services</h3>' +
-          '<p>When you submit the contact form, your request is processed by Formspree, which may set its own cookies as described in their <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener noreferrer">privacy policy</a>.</p>' +
-          '<h3>Your control</h3>' +
-          '<p>You can clear cookies and site data at any time through your browser settings. Doing so will not affect site functionality.</p>'
+        meta:  'Last updated · June 2026',
+        lead:  'This website uses cookies and similar technologies sparingly. Here&rsquo;s what to expect.',
+        sections: [
+          { id:'cookies-use',     h:'What we use',          html:'<p>This site does not use third-party analytics, advertising trackers, or social media cookies. We do not store any persistent identifiers on your device.</p>' },
+          { id:'cookies-storage', h:'Essential storage',    html:'<p>Some browser storage may be used temporarily to remember small UI states (such as menu position) during your visit. This information stays on your device and is not transmitted anywhere.</p>' },
+          { id:'cookies-third',   h:'Third-party services', html:'<p>When you submit the contact form, your request is processed by Formspree, which may set its own cookies as described in their <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener noreferrer">privacy policy</a>.</p>' },
+          { id:'cookies-control', h:'Your control',         html:'<p>You can clear cookies and site data at any time through your browser settings. Doing so will not affect site functionality.</p>' }
+        ]
       }
     };
 
-    function openModal(key){
+    function build(key){
       var c = CONTENT[key];
-      if(!c) return;
-      lastFocus = document.activeElement;
+      if(!c) return false;
       titleEl.textContent = c.title;
-      bodyEl.innerHTML = c.html;
-      bodyEl.scrollTop = 0;
-      modal.setAttribute('aria-hidden', 'false');
-      modal.classList.add('open');
-      document.body.classList.add('modal-open');
-      var closeBtn = modal.querySelector('.legal-modal__close');
-      if(closeBtn) setTimeout(function(){ closeBtn.focus(); }, 60);
+      metaEl.textContent  = c.meta;
+
+      var toc = '', art = c.lead ? '<p class="lead">' + c.lead + '</p>' : '';
+      c.sections.forEach(function(s){
+        toc += '<a href="#' + s.id + '" data-spy="' + s.id + '">' + s.h + '</a>';
+        art += '<section class="legal-page__section" id="' + s.id + '"><h2>' + s.h + '</h2>' + s.html + '</section>';
+      });
+      tocEl.innerHTML = toc;
+      contentEl.innerHTML = art;
+
+      Array.prototype.forEach.call(tocEl.querySelectorAll('a'), function(a){
+        a.addEventListener('click', function(e){
+          e.preventDefault();
+          var t = document.getElementById(a.getAttribute('data-spy'));
+          if(t) t.scrollIntoView({ behavior:'smooth', block:'start' });
+        });
+      });
+
+      setupSpy();
+      return true;
     }
 
-    function closeModal(){
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('modal-open');
+    /* Scroll-spy: highlight the TOC entry for the section nearest the top */
+    function setupSpy(){
+      if(spy) spy.disconnect();
+      var sections = Array.prototype.slice.call(contentEl.querySelectorAll('.legal-page__section'));
+      var order = sections.map(function(s){ return s.id; });
+      var links = {};
+      Array.prototype.forEach.call(tocEl.querySelectorAll('a'), function(a){
+        links[a.getAttribute('data-spy')] = a;
+      });
+      if(!sections.length) return;
+
+      var visible = {};
+      function paint(){
+        var active = order.filter(function(id){ return visible[id]; })[0] || order[0];
+        order.forEach(function(id){
+          if(links[id]) links[id].classList.toggle('active', id === active);
+        });
+      }
+      spy = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){ visible[en.target.id] = en.isIntersecting; });
+        paint();
+      }, { root: page, rootMargin:'-46% 0px -50% 0px', threshold:0 });
+      sections.forEach(function(s){ spy.observe(s); });
+      if(links[order[0]]) links[order[0]].classList.add('active');
+    }
+
+    function openPage(key){
+      if(!build(key)) return;
+      lastFocus = document.activeElement;
+      page.scrollTop = 0;
+      page.setAttribute('aria-hidden', 'false');
+      page.classList.add('open');
+      document.body.classList.add('legal-open');
+      var back = page.querySelector('.legal-page__back');
+      if(back) setTimeout(function(){ back.focus(); }, 80);
+    }
+
+    function closePage(){
+      page.classList.remove('open');
+      page.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('legal-open');
+      if(spy){ spy.disconnect(); spy = null; }
       if(lastFocus && lastFocus.focus) lastFocus.focus();
     }
 
-    /* Bind footer links */
+    /* Footer links open the page */
     document.querySelectorAll('[data-legal]').forEach(function(a){
       a.addEventListener('click', function(e){
         e.preventDefault();
-        openModal(a.getAttribute('data-legal'));
+        openPage(a.getAttribute('data-legal'));
       });
     });
 
-    /* Close on backdrop / close-button click */
-    modal.querySelectorAll('[data-close]').forEach(function(el){
-      el.addEventListener('click', closeModal);
+    /* Back / close buttons */
+    page.querySelectorAll('[data-legal-close]').forEach(function(el){
+      el.addEventListener('click', closePage);
     });
 
     /* Close on ESC */
     document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      if(e.key === 'Escape' && page.classList.contains('open')) closePage();
     });
   })();
 })();
